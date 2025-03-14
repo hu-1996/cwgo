@@ -38,10 +38,10 @@ cwgo 是 CloudWeGo All in one 代码生成工具，整合了 kitex 和 hz 工具
 
 ```shell
 # Go 1.15 及之前版本
-GO111MODULE=on GOPROXY=https://goproxy.cn/,direct go get github.com/cloudwego/cwgo@latest
+GO111MODULE=on GOPROXY=https://goproxy.cn/,direct go get github.com/hu-1996/cwgo@latest
 
 # Go 1.16 及以后版本
-GOPROXY=https://goproxy.cn/,direct go install github.com/cloudwego/cwgo@latest
+GOPROXY=https://goproxy.cn/,direct go install github.com/hu-1996/cwgo@latest
 ```
 
 ## 详细文档
@@ -86,13 +86,13 @@ Layout 生成及 Layout 介绍，详见[文档](https://www.cloudwego.io/zh/docs
 
 ## 开源许可
 
-cwgo 基于[Apache License 2.0](https://github.com/cloudwego/cwgo/blob/main/LICENSE) 许可证，其依赖的三方组件的开源许可见 [Licenses](https://github.com/cloudwego/cwgo/blob/main/licenses)。
+cwgo 基于[Apache License 2.0](https://github.com/hu-1996/cwgo/blob/main/LICENSE) 许可证，其依赖的三方组件的开源许可见 [Licenses](https://github.com/hu-1996/cwgo/blob/main/licenses)。
 
 ## 联系我们
 
 - Email: conduct@cloudwego.io
 - 如何成为 member: [COMMUNITY MEMBERSHIP](https://github.com/cloudwego/community/blob/main/COMMUNITY_MEMBERSHIP.md)
-- Issues: [Issues](https://github.com/cloudwego/cwgo/issues)
+- Issues: [Issues](https://github.com/hu-1996/cwgo/issues)
 - Discord: 加入我们的 [Discord 频道](https://discord.gg/jceZSE7DsW)
 - 飞书用户群（[注册飞书](https://www.larksuite.com/zh_cn/download)进群）
 

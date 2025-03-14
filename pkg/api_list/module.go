@@ -19,7 +19,7 @@ package api_list
 import (
 	"fmt"
 
-	"github.com/cloudwego/cwgo/pkg/common/utils"
+	"github.com/hu-1996/cwgo/pkg/common/utils"
 )
 
 func getModuleName(path string) (string, error) {

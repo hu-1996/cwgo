@@ -18,15 +18,15 @@ package main
 import (
 	"os"
 
-	"github.com/cloudwego/cwgo/pkg/curd/doc/mongo/plugin"
+	"github.com/hu-1996/cwgo/pkg/curd/doc/mongo/plugin"
 
-	"github.com/cloudwego/cwgo/cmd/static"
-	"github.com/cloudwego/cwgo/tpl"
 	"github.com/cloudwego/hertz/cmd/hz/app"
 	"github.com/cloudwego/hertz/cmd/hz/util/logs"
 	kargs "github.com/cloudwego/kitex/tool/cmd/kitex/args"
 	"github.com/cloudwego/kitex/tool/internal_pkg/pluginmode/protoc"
 	"github.com/cloudwego/kitex/tool/internal_pkg/pluginmode/thriftgo"
+	"github.com/hu-1996/cwgo/cmd/static"
+	"github.com/hu-1996/cwgo/tpl"
 )
 
 func main() {

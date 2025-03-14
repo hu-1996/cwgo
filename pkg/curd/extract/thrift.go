@@ -27,14 +27,14 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/cloudwego/cwgo/pkg/consts"
-	"github.com/cloudwego/cwgo/pkg/curd/code"
+	"github.com/hu-1996/cwgo/pkg/consts"
+	"github.com/hu-1996/cwgo/pkg/curd/code"
 
 	"golang.org/x/tools/go/ast/astutil"
 
-	"github.com/cloudwego/cwgo/config"
 	"github.com/cloudwego/hertz/cmd/hz/util"
 	"github.com/cloudwego/thriftgo/plugin"
+	"github.com/hu-1996/cwgo/config"
 
 	"github.com/cloudwego/thriftgo/parser"
 )

@@ -22,17 +22,17 @@ import (
 	"io"
 	"os"
 
-	"github.com/cloudwego/cwgo/pkg/curd/code"
-	"github.com/cloudwego/cwgo/pkg/curd/doc/mongo/codegen"
-	"github.com/cloudwego/cwgo/pkg/curd/extract"
-	"github.com/cloudwego/cwgo/pkg/curd/parse"
-	"github.com/cloudwego/cwgo/pkg/curd/template"
+	"github.com/hu-1996/cwgo/pkg/curd/code"
+	"github.com/hu-1996/cwgo/pkg/curd/doc/mongo/codegen"
+	"github.com/hu-1996/cwgo/pkg/curd/extract"
+	"github.com/hu-1996/cwgo/pkg/curd/parse"
+	"github.com/hu-1996/cwgo/pkg/curd/template"
 
-	"github.com/cloudwego/cwgo/config"
-	cwgoMeta "github.com/cloudwego/cwgo/meta"
 	"github.com/cloudwego/hertz/cmd/hz/meta"
 	"github.com/cloudwego/hertz/cmd/hz/util/logs"
 	"github.com/cloudwego/thriftgo/plugin"
+	"github.com/hu-1996/cwgo/config"
+	cwgoMeta "github.com/hu-1996/cwgo/meta"
 )
 
 type thriftGoPlugin struct {

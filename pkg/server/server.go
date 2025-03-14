@@ -23,16 +23,16 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/cloudwego/cwgo/config"
-	"github.com/cloudwego/cwgo/pkg/common/kx_registry"
-	"github.com/cloudwego/cwgo/pkg/common/utils"
-	"github.com/cloudwego/cwgo/pkg/consts"
 	"github.com/cloudwego/hertz/cmd/hz/app"
 	hzConfig "github.com/cloudwego/hertz/cmd/hz/config"
 	"github.com/cloudwego/hertz/cmd/hz/meta"
 	kargs "github.com/cloudwego/kitex/tool/cmd/kitex/args"
 	"github.com/cloudwego/kitex/tool/internal_pkg/log"
 	"github.com/cloudwego/kitex/tool/internal_pkg/pluginmode/thriftgo"
+	"github.com/hu-1996/cwgo/config"
+	"github.com/hu-1996/cwgo/pkg/common/kx_registry"
+	"github.com/hu-1996/cwgo/pkg/common/utils"
+	"github.com/hu-1996/cwgo/pkg/consts"
 	"github.com/urfave/cli/v2"
 )
 

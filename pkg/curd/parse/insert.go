@@ -17,8 +17,8 @@
 package parse
 
 import (
-	"github.com/cloudwego/cwgo/pkg/curd/code"
-	"github.com/cloudwego/cwgo/pkg/curd/extract"
+	"github.com/hu-1996/cwgo/pkg/curd/code"
+	"github.com/hu-1996/cwgo/pkg/curd/extract"
 )
 
 type InsertParse struct {

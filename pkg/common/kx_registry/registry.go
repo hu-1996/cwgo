@@ -19,10 +19,10 @@ import (
 	"os"
 	"path"
 
-	"github.com/cloudwego/cwgo/config"
-	"github.com/cloudwego/cwgo/pkg/consts"
-	"github.com/cloudwego/cwgo/tpl"
 	"github.com/cloudwego/kitex/tool/internal_pkg/generator"
+	"github.com/hu-1996/cwgo/config"
+	"github.com/hu-1996/cwgo/pkg/consts"
+	"github.com/hu-1996/cwgo/tpl"
 )
 
 func HandleRegistry(ca *config.CommonParam, dir string) {

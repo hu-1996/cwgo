@@ -23,11 +23,11 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/cloudwego/cwgo/config"
-	"github.com/cloudwego/cwgo/pkg/common/utils"
-	"github.com/cloudwego/cwgo/pkg/consts"
-	"github.com/cloudwego/cwgo/tpl"
 	hzConfig "github.com/cloudwego/hertz/cmd/hz/config"
+	"github.com/hu-1996/cwgo/config"
+	"github.com/hu-1996/cwgo/pkg/common/utils"
+	"github.com/hu-1996/cwgo/pkg/consts"
+	"github.com/hu-1996/cwgo/tpl"
 )
 
 func convertHzArgument(ca *config.ClientArgument, hzArgument *hzConfig.Argument) (err error) {

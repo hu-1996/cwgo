@@ -17,8 +17,8 @@
 package codegen
 
 import (
-	"github.com/cloudwego/cwgo/pkg/curd/code"
-	"github.com/cloudwego/cwgo/pkg/curd/parse"
+	"github.com/hu-1996/cwgo/pkg/curd/code"
+	"github.com/hu-1996/cwgo/pkg/curd/parse"
 )
 
 func taCodegen(transaction *parse.TransactionParse) []code.Statement {

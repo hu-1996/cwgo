@@ -23,8 +23,8 @@ import (
 	"strings"
 
 	"github.com/Masterminds/sprig/v3"
-	"github.com/cloudwego/cwgo/pkg/consts"
 	"github.com/cloudwego/kitex/tool/internal_pkg/generator"
+	"github.com/hu-1996/cwgo/pkg/consts"
 )
 
 //go:embed kitex

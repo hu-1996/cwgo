@@ -16,7 +16,7 @@
 
 package codegen
 
-import "github.com/cloudwego/cwgo/pkg/curd/code"
+import "github.com/hu-1996/cwgo/pkg/curd/code"
 
 func deleteOneBaseCodegen() []code.Statement {
 	stmt := `if deleteOneData == nil {

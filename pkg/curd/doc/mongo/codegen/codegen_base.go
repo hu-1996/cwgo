@@ -22,8 +22,8 @@ import (
 	"go/printer"
 	"go/token"
 
-	"github.com/cloudwego/cwgo/pkg/curd/code"
-	"github.com/cloudwego/cwgo/pkg/curd/template"
+	"github.com/hu-1996/cwgo/pkg/curd/code"
+	"github.com/hu-1996/cwgo/pkg/curd/template"
 
 	"golang.org/x/tools/go/ast/astutil"
 )

@@ -20,12 +20,12 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/cloudwego/cwgo/pkg/curd/code"
+	"github.com/hu-1996/cwgo/pkg/curd/code"
 
-	"github.com/cloudwego/cwgo/pkg/common/utils"
-	"github.com/cloudwego/cwgo/pkg/curd/doc/mongo/codegen"
-	"github.com/cloudwego/cwgo/pkg/curd/extract"
-	"github.com/cloudwego/cwgo/pkg/curd/template"
+	"github.com/hu-1996/cwgo/pkg/common/utils"
+	"github.com/hu-1996/cwgo/pkg/curd/doc/mongo/codegen"
+	"github.com/hu-1996/cwgo/pkg/curd/extract"
+	"github.com/hu-1996/cwgo/pkg/curd/template"
 )
 
 func getInterfaceMethods() []*extract.InterfaceMethod {
