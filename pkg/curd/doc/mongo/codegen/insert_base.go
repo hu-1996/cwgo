@@ -16,7 +16,7 @@
 
 package codegen
 
-import "github.com/cloudwego/cwgo/pkg/curd/code"
+import "github.com/hu-1996/cwgo/pkg/curd/code"
 
 func insertOneBaseCodegen() []code.Statement {
 	stmt := `if insertOneData == nil {

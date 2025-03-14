@@ -20,8 +20,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cloudwego/cwgo/config"
-	"github.com/cloudwego/cwgo/pkg/consts"
+	"github.com/hu-1996/cwgo/config"
+	"github.com/hu-1996/cwgo/pkg/consts"
 	"github.com/urfave/cli/v2"
 )
 

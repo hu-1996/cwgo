@@ -19,7 +19,7 @@ package utils
 import (
 	"strings"
 
-	"github.com/cloudwego/cwgo/pkg/consts"
+	"github.com/hu-1996/cwgo/pkg/consts"
 )
 
 type FlagStringSlice []string

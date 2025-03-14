@@ -25,15 +25,15 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/cloudwego/cwgo/config"
+	"github.com/hu-1996/cwgo/config"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestJobValidCreation(t *testing.T) {
 	args := &config.JobArgument{
 		JobName:       []string{"job1"},
-		GoMod:         "github.com/cloudwego/cwgo",
-		PackagePrefix: "github.com/cloudwego/cwgo",
+		GoMod:         "github.com/hu-1996/cwgo",
+		PackagePrefix: "github.com/hu-1996/cwgo",
 		OutDir:        "./test_out",
 	}
 
@@ -85,16 +85,16 @@ func Run() {
 }
 `
 	jobs := []JobInfo{
-		{JobName: "job1", PackagePrefix: "github.com/cloudwego/cwgo"},
-		{JobName: "job2", PackagePrefix: "github.com/cloudwego/cwgo"},
+		{JobName: "job1", PackagePrefix: "github.com/hu-1996/cwgo"},
+		{JobName: "job2", PackagePrefix: "github.com/hu-1996/cwgo"},
 	}
 
 	expected := `package schedule
 
 import (
 	"sync"
-	job1 "github.com/cloudwego/cwgo/job1/job"
-	job2 "github.com/cloudwego/cwgo/job2/job"
+	job1 "github.com/hu-1996/cwgo/job1/job"
+	job2 "github.com/hu-1996/cwgo/job2/job"
 )
 
 var wg sync.WaitGroup
@@ -141,8 +141,8 @@ go func() {
 func TestJobMissingJobName(t *testing.T) {
 	args := &config.JobArgument{
 		JobName:       []string{""},
-		GoMod:         "github.com/cloudwego/cwgo",
-		PackagePrefix: "github.com/cloudwego/cwgo",
+		GoMod:         "github.com/hu-1996/cwgo",
+		PackagePrefix: "github.com/hu-1996/cwgo",
 		OutDir:        "./test_out",
 	}
 
@@ -189,7 +189,7 @@ func TestJobWithEmptyModule(t *testing.T) {
 	args := &config.JobArgument{
 		JobName:       []string{"job3"},
 		GoMod:         "",
-		PackagePrefix: "github.com/cloudwego/cwgo",
+		PackagePrefix: "github.com/hu-1996/cwgo",
 		OutDir:        "./test_out",
 	}
 
@@ -211,7 +211,7 @@ func TestJobWithoutGoModInGOPATH(t *testing.T) {
 	args := &config.JobArgument{
 		JobName:       []string{"job3"},
 		GoMod:         "",
-		PackagePrefix: "github.com/cloudwego/cwgo",
+		PackagePrefix: "github.com/hu-1996/cwgo",
 		OutDir:        "./test_out",
 	}
 

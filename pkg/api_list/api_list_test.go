@@ -22,7 +22,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/cloudwego/cwgo/pkg/consts"
+	"github.com/hu-1996/cwgo/pkg/consts"
 )
 
 func trimExecutedPath(path string, routers []*RouterParsed) {

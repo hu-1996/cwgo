@@ -23,17 +23,17 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/cloudwego/cwgo/pkg/common/parser"
+	"github.com/hu-1996/cwgo/pkg/common/parser"
 
-	"github.com/cloudwego/cwgo/pkg/curd/doc/mongo/codegen"
-	"github.com/cloudwego/cwgo/pkg/curd/extract"
-	"github.com/cloudwego/cwgo/pkg/curd/parse"
-	"github.com/cloudwego/cwgo/pkg/curd/template"
+	"github.com/hu-1996/cwgo/pkg/curd/doc/mongo/codegen"
+	"github.com/hu-1996/cwgo/pkg/curd/extract"
+	"github.com/hu-1996/cwgo/pkg/curd/parse"
+	"github.com/hu-1996/cwgo/pkg/curd/template"
 
-	"github.com/cloudwego/cwgo/config"
-	"github.com/cloudwego/cwgo/pkg/common/utils"
-	"github.com/cloudwego/cwgo/pkg/consts"
 	"github.com/cloudwego/hertz/cmd/hz/meta"
+	"github.com/hu-1996/cwgo/config"
+	"github.com/hu-1996/cwgo/pkg/common/utils"
+	"github.com/hu-1996/cwgo/pkg/consts"
 )
 
 func MongoTriggerPlugin(c *config.DocArgument) error {

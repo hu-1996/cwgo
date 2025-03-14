@@ -24,9 +24,9 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/cloudwego/cwgo/pkg/curd/code"
+	"github.com/hu-1996/cwgo/pkg/curd/code"
 
-	"github.com/cloudwego/cwgo/pkg/common/utils"
+	"github.com/hu-1996/cwgo/pkg/common/utils"
 
 	"github.com/fatih/camelcase"
 )

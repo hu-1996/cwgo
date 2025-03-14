@@ -32,7 +32,7 @@ import (
 	"github.com/cloudwego/kitex/tool/cmd/kitex/args"
 	"github.com/cloudwego/kitex/tool/internal_pkg/pluginmode/thriftgo"
 
-	"github.com/cloudwego/cwgo/pkg/consts"
+	"github.com/hu-1996/cwgo/pkg/consts"
 )
 
 func GetGOPATH() (gopath string, err error) {

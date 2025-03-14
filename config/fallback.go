@@ -19,7 +19,7 @@ package config
 import (
 	"fmt"
 
-	"github.com/cloudwego/cwgo/pkg/consts"
+	"github.com/hu-1996/cwgo/pkg/consts"
 	"github.com/urfave/cli/v2"
 )
 

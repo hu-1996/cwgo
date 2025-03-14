@@ -19,7 +19,7 @@ package template
 import (
 	"bytes"
 
-	"github.com/cloudwego/cwgo/pkg/curd/code"
+	"github.com/hu-1996/cwgo/pkg/curd/code"
 )
 
 var methodTemplate = `{{.Comment}}

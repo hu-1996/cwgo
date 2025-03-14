@@ -23,16 +23,15 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/cloudwego/cwgo/config"
-	"github.com/cloudwego/cwgo/pkg/common/kx_registry"
-	"github.com/cloudwego/cwgo/pkg/common/utils"
-	"github.com/cloudwego/cwgo/pkg/consts"
-	"github.com/cloudwego/hertz/cmd/hz/app"
-	hzConfig "github.com/cloudwego/hertz/cmd/hz/config"
 	"github.com/cloudwego/hertz/cmd/hz/meta"
 	kargs "github.com/cloudwego/kitex/tool/cmd/kitex/args"
 	"github.com/cloudwego/kitex/tool/internal_pkg/log"
 	"github.com/cloudwego/kitex/tool/internal_pkg/pluginmode/thriftgo"
+	"github.com/hu-1996/cwgo/config"
+	hz "github.com/hu-1996/cwgo/hertz"
+	"github.com/hu-1996/cwgo/pkg/common/kx_registry"
+	"github.com/hu-1996/cwgo/pkg/common/utils"
+	"github.com/hu-1996/cwgo/pkg/consts"
 	"github.com/urfave/cli/v2"
 )
 
@@ -71,7 +70,7 @@ func Server(c *config.ServerArgument) error {
 			if err != nil {
 				return err
 			}
-			err = app.TriggerPlugin(hzArgs)
+			err = hz.TriggerPlugin(hzArgs)
 			if err != nil {
 				return err
 			}
@@ -88,14 +87,14 @@ func Server(c *config.ServerArgument) error {
 		utils.UpgradeGolangProtobuf()
 		utils.Hessian2PostProcessing(args)
 	case consts.HTTP:
-		args := hzConfig.NewArgument()
+		args := config.NewHzArgument()
 		utils.SetHzVerboseLog(c.Verbose)
 		err = convertHzArgument(c, args)
 		if err != nil {
 			return err
 		}
 
-		if utils.IsHzNew(c.OutDir) {
+		if utils.IsHzNew("") {
 			args.CmdType = meta.CmdNew
 			if c.GoMod == "" {
 				return fmt.Errorf("output directory %s is not under GOPATH/src. Please specify a module name with the '-module' flag", c.Cwd)
@@ -110,7 +109,7 @@ func Server(c *config.ServerArgument) error {
 			} else {
 				args.NeedGoMod = true
 			}
-			err = app.GenerateLayout(args)
+			err = hz.GenerateLayout(args)
 			if err != nil {
 				return cli.Exit(err, meta.GenerateLayoutError)
 			}
@@ -118,7 +117,7 @@ func Server(c *config.ServerArgument) error {
 				// ".hz" file converges to the hz tool
 				manifest := new(meta.Manifest)
 				args.InitManifest(manifest)
-				err = manifest.Persist(args.OutDir)
+				err = manifest.Persist("")
 				if err != nil {
 					err = cli.Exit(fmt.Errorf("persist manifest failed: %v", err), meta.PersistError)
 				}
@@ -129,7 +128,7 @@ func Server(c *config.ServerArgument) error {
 		} else {
 			args.CmdType = meta.CmdUpdate
 			manifest := new(meta.Manifest)
-			err = manifest.InitAndValidate(args.OutDir)
+			err = manifest.InitAndValidate("")
 			if err != nil {
 				return cli.Exit(err, meta.LoadError)
 			}
@@ -155,14 +154,14 @@ func Server(c *config.ServerArgument) error {
 			defer func() {
 				// If the "handler_dir"/"model_dir" is updated, write it back to ".hz"
 				args.UpdateManifest(manifest)
-				err = manifest.Persist(args.OutDir)
+				err = manifest.Persist("")
 				if err != nil {
 					err = cli.Exit(fmt.Errorf("persist manifest failed: %v", err), meta.PersistError)
 				}
 			}()
 		}
 
-		err = app.TriggerPlugin(args)
+		err = hz.TriggerPlugin(args)
 		if err != nil {
 			return cli.Exit(err, meta.PluginError)
 		}

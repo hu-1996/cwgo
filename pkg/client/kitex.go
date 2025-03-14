@@ -24,14 +24,14 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/cloudwego/cwgo/config"
-	"github.com/cloudwego/cwgo/pkg/common/utils"
-	"github.com/cloudwego/cwgo/pkg/consts"
-	"github.com/cloudwego/cwgo/tpl"
 	"github.com/cloudwego/kitex"
 	kargs "github.com/cloudwego/kitex/tool/cmd/kitex/args"
 	"github.com/cloudwego/kitex/tool/internal_pkg/generator"
 	"github.com/cloudwego/kitex/tool/internal_pkg/log"
+	"github.com/hu-1996/cwgo/config"
+	"github.com/hu-1996/cwgo/pkg/common/utils"
+	"github.com/hu-1996/cwgo/pkg/consts"
+	"github.com/hu-1996/cwgo/tpl"
 )
 
 func convertKitexArgs(sa *config.ClientArgument, kitexArgument *kargs.Arguments) (err error) {
