@@ -1,4 +1,4 @@
-module github.com/cloudwego/cwgo
+module github.com/hu-1996/cwgo
 
 go 1.18
 
