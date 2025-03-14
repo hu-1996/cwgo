@@ -61,6 +61,7 @@ func (s *ServerArgument) ParseCli(ctx *cli.Context) error {
 	s.Verbose = ctx.Bool(consts.Verbose)
 	s.SliceParam.ProtoSearchPath = ctx.StringSlice(consts.ProtoSearchPath)
 	s.SliceParam.Pass = ctx.StringSlice(consts.Pass)
+	s.OutDir = ctx.String(consts.OutDir)
 	return nil
 }
 
