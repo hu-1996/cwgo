@@ -19,6 +19,7 @@ package client
 import (
 	"flag"
 	"fmt"
+	"os"
 	"path"
 	"path/filepath"
 	"strings"
@@ -59,6 +60,16 @@ func convertHzArgument(ca *config.ClientArgument, hzArgument *hzConfig.Argument)
 		}
 	}
 
+	exist, err := utils.PathExist(ca.OutDir)
+	if err != nil {
+		return err
+	}
+	if !exist {
+		if err = os.MkdirAll(ca.OutDir, 0o755); err != nil {
+			return err
+		}
+	}
+
 	hzArgument.IdlPaths = []string{abPath}
 	hzArgument.Gomod = ca.GoMod
 	hzArgument.ServiceName = ca.ServerName
@@ -68,7 +79,7 @@ func convertHzArgument(ca *config.ClientArgument, hzArgument *hzConfig.Argument)
 	hzArgument.Gopkg = ca.GoPkg
 	hzArgument.Gopath = ca.GoPath
 	hzArgument.Verbose = ca.Verbose
-	hzArgument.OutDir = ca.Cwd
+	hzArgument.OutDir = ca.OutDir
 	// Automatic judgment param
 	hzArgument.IdlType, err = utils.GetIdlType(abPath)
 	if err != nil {

@@ -124,7 +124,7 @@ func (pkgGen *HttpPackageGenerator) GenModel(data *model.Model, gen bool) error 
 			path = data.Package[len(pkgGen.ProjPackage):]
 		} else {
 			path = data.Package
-			updatePackage = true
+			//updatePackage = true
 		}
 		modelDir := util.SubDir(pkgGen.ModelDir, path)
 		if updatePackage {

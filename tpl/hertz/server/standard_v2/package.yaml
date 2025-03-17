@@ -6,7 +6,6 @@ layouts:
       package {{$PackageName}}
       import (
        "context"
-
        "github.com/cloudwego/hertz/pkg/app"
        "github.com/cloudwego/hertz/pkg/protocol/consts"
       {{- range $k, $v := .Imports}}
@@ -14,12 +13,12 @@ layouts:
       {{- end}}
       {{- range $_, $OutDir := $OutDirs}}
         {{if eq $OutDir "" -}}
-         service "{{$.ProjPackage}}/biz/service/{{$PackageName}}"
+         service "{{$.ProjPackage}}/{{$.Module}}/biz/service/{{$PackageName}}"
         {{- else -}}
-          "{{$.ProjPackage}}/biz/service/{{$OutDir}}"
+          "{{$.ProjPackage}}/{{$.Module}}/biz/service/{{$OutDir}}"
         {{- end -}}
       {{- end}}
-      "{{$.ProjPackage}}/biz/utils"
+      "{{$.ProjPackage}}/utils"
       )
       {{range $_, $MethodInfo := .Methods}}
       {{$MethodInfo.Comment}}
@@ -57,9 +56,9 @@ layouts:
           {{$OutDirs := GetUniqueHandlerOutDir .Methods}}
           {{- range $_, $OutDir := $OutDirs}}
             {{if eq $OutDir "" -}}
-              "{{$.ProjPackage}}/biz/service"
+              "{{$.ProjPackage}}/{{$.Module}}/biz/service"
             {{- else -}}
-              "{{$.ProjPackage}}/biz/service/{{$OutDir}}"
+              "{{$.ProjPackage}}/{{$.Module}}/biz/service/{{$OutDir}}"
             {{end}}
           {{- end}}
 

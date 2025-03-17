@@ -87,6 +87,13 @@ func convertHzArgument(sa *config.ServerArgument, hzArgument *config.HzArgument)
 	hzArgument.Gopkg = sa.GoPkg
 	hzArgument.Gopath = sa.GoPath
 	hzArgument.Verbose = sa.Verbose
+
+	cpath, err := filepath.Abs(consts.CurrentDir)
+	if err != nil {
+		return err
+	}
+	rpath := strings.TrimPrefix(sa.OutDir, cpath+"/")
+	hzArgument.Module = rpath
 	// Automatic judgment param
 	hzArgument.IdlType, err = utils.GetIdlType(abPath)
 	if err != nil {

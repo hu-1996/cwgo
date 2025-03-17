@@ -60,6 +60,7 @@ import (
 	"github.com/cloudwego/hertz/cmd/hz/util"
 	"github.com/cloudwego/hertz/cmd/hz/util/logs"
 	"github.com/hu-1996/cwgo/hertz/generator"
+	"github.com/hu-1996/cwgo/pkg/consts"
 	gengo "google.golang.org/protobuf/cmd/protoc-gen-go/internal_gengo"
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/proto"
@@ -73,6 +74,7 @@ type Plugin struct {
 	Package      string
 	Recursive    bool
 	OutDir       string
+	Module       string
 	ModelDir     string
 	UseDir       string
 	IdlClientDir string
@@ -191,8 +193,6 @@ func (plugin *Plugin) Response(resp *pluginpb.CodeGeneratorResponse) error {
 		return fmt.Errorf("marshal response failed: %s", err.Error())
 	}
 
-	logs.Infof("resp: %s\n", string(out))
-
 	_, err = os.Stdout.Write(out)
 	if err != nil {
 		return fmt.Errorf("write response failed: %s", err.Error())
@@ -211,6 +211,12 @@ func (plugin *Plugin) Handle(req *pluginpb.CodeGeneratorRequest, args *config.Ar
 	if err != nil {
 		return fmt.Errorf("new protoc plugin failed: %s", err.Error())
 	}
+	cpath, err := filepath.Abs(consts.CurrentDir)
+	if err != nil {
+		return err
+	}
+	rpath := strings.TrimPrefix(plugin.OutDir, cpath+"/")
+	plugin.Module = rpath
 	// plugin start working
 	err = plugin.GenerateFiles(gen)
 	if err != nil {
@@ -379,7 +385,7 @@ func (plugin *Plugin) GenerateFile(gen *protogen.Plugin, f *protogen.File) error
 	if len(plugin.UseDir) != 0 {
 		return nil
 	}
-	file, err := generateFile(gen, f, plugin.RmTags)
+	file, err := generateFile(gen, f, plugin.RmTags, plugin.Module)
 	if err != nil || file == nil {
 		return fmt.Errorf("generate file %s failed: %s", f.Proto.GetName(), err.Error())
 	}
@@ -387,8 +393,16 @@ func (plugin *Plugin) GenerateFile(gen *protogen.Plugin, f *protogen.File) error
 }
 
 // generateFile generates the contents of a .pb.go file.
-func generateFile(gen *protogen.Plugin, file *protogen.File, rmTags RemoveTags) (*protogen.GeneratedFile, error) {
+func generateFile(gen *protogen.Plugin, file *protogen.File, rmTags RemoveTags, module string) (*protogen.GeneratedFile, error) {
 	filename := file.GeneratedFilenamePrefix + ".pb.go"
+	if module != "" {
+		moduleLen := strings.Split(module, "/")
+		for i := range moduleLen {
+			if moduleLen[i] != "" {
+				filename = filepath.Join("..", filename)
+			}
+		}
+	}
 	g := gen.NewGeneratedFile(filename, file.GoImportPath)
 	f := newFileInfo(file)
 
@@ -622,6 +636,7 @@ func (plugin *Plugin) genHttpPackage(ast *descriptorpb.FileDescriptorProto, deps
 			Excludes:  args.Excludes,
 		},
 		ProjPackage:          pkg,
+		Module:               plugin.Module,
 		Options:              options,
 		HandlerByMethod:      args.HandlerByMethod,
 		CmdType:              args.CmdType,

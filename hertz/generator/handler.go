@@ -53,6 +53,7 @@ type Handler struct {
 	FilePath    string
 	PackageName string
 	ProjPackage string
+	Module      string
 	Imports     map[string]*model.Model
 	Methods     []*HttpMethod
 }
@@ -104,6 +105,7 @@ func (pkgGen *HttpPackageGenerator) genHandler(pkg *HttpPackage, handlerDir, han
 				PackageName: util.SplitPackage(tmpHandlerPackage, ""),
 				Methods:     s.Methods,
 				ProjPackage: pkgGen.ProjPackage,
+				Module:      pkgGen.Module,
 			}
 
 			for _, m := range s.Methods {
@@ -159,6 +161,7 @@ func (pkgGen *HttpPackageGenerator) processHandler(handler *Handler, root *Route
 				handler.Imports[key] = mm
 				continue
 			}
+			logs.Infof("key: %s, mm.Package: %s", key, mm.Package)
 			handler.Imports[mm.PackageName] = mm
 		}
 		err := root.Update(m, handler.PackageName, singleHandlerPackage, pkgGen.SortRouter)

@@ -94,7 +94,7 @@ func Server(c *config.ServerArgument) error {
 			return err
 		}
 
-		if utils.IsHzNew("") {
+		if utils.IsHzNew(args.OutDir) {
 			args.CmdType = meta.CmdNew
 			if c.GoMod == "" {
 				return fmt.Errorf("output directory %s is not under GOPATH/src. Please specify a module name with the '-module' flag", c.Cwd)

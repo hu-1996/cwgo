@@ -55,6 +55,7 @@ type HttpPackageGenerator struct {
 	Options        []Option
 	CmdType        string
 	ProjPackage    string // go module for project
+	Module         string
 	HandlerDir     string
 	RouterDir      string
 	ModelDir       string
@@ -180,9 +181,9 @@ func (pkgGen *HttpPackageGenerator) Generate(pkg *HttpPackage) error {
 	if pkgGen.HandlerByMethod {
 		handlerDir = pkgGen.HandlerDir
 	}
-	handlerPackage := util.SubPackage(pkgGen.ProjPackage, handlerDir)
+	handlerPackage := util.SubPackage(pkgGen.ProjPackage, filepath.Join(pkgGen.Module, handlerDir))
 	routerDir := util.SubDir(pkgGen.RouterDir, pkg.Package)
-	routerPackage := util.SubPackage(pkgGen.ProjPackage, routerDir)
+	routerPackage := util.SubPackage(pkgGen.ProjPackage, filepath.Join(pkgGen.Module, routerDir))
 
 	root := NewRouterTree()
 	if err := pkgGen.genHandler(pkg, handlerDir, handlerPackage, root); err != nil {

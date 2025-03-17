@@ -85,6 +85,7 @@ func (pkgGen *HttpPackageGenerator) genClient(pkg *HttpPackage, clientDir string
 					client.Imports[key] = mm
 					continue
 				}
+
 				client.Imports[mm.PackageName] = mm
 			}
 		}

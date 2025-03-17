@@ -101,6 +101,7 @@ type HzArgument struct {
 	ServiceName string // service name
 	Use         string
 	NeedGoMod   bool
+	Module      string
 
 	JSONEnumStr          bool
 	QueryEnumAsInt       bool

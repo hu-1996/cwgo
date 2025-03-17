@@ -29,6 +29,7 @@ import (
 	"unicode"
 
 	"github.com/cloudwego/hertz/cmd/hz/util"
+	"github.com/cloudwego/hertz/cmd/hz/util/logs"
 )
 
 type Router struct {
@@ -228,6 +229,7 @@ func (routerNode *RouterNode) Insert(name string, method *HttpMethod, handlerTyp
 				if len(method.RefPackage) != 0 {
 					c.Handler = method.RefPackageAlias + "." + method.Name
 					c.HandlerPackageAlias = method.RefPackageAlias
+					logs.Infof("HandlerPackage: %s\n", method.RefPackage)
 					c.HandlerPackage = method.RefPackage
 				}
 			}
@@ -417,6 +419,7 @@ func (pkgGen *HttpPackageGenerator) genRouter(pkg *HttpPackage, root *RouterNode
 	handlerMap := make(map[string]string)
 	hook := func(layer int, node *RouterNode) error {
 		if len(node.HandlerPackage) != 0 {
+			logs.Infof("handler package: %s -- %s", node.HandlerPackageAlias, node.HandlerPackage)
 			handlerMap[node.HandlerPackageAlias] = node.HandlerPackage
 		}
 		return nil

@@ -68,6 +68,7 @@ type UpdateBehavior struct {
 // TemplateGenerator contains information about the output template
 type TemplateGenerator struct {
 	OutputDir    string
+	Module       string
 	Config       *TemplateConfig
 	Excludes     []string
 	tpls         map[string]*template.Template // "template name" -> "Template", it is used get the "parsed template" directly
@@ -212,7 +213,6 @@ func (tg *TemplateGenerator) Generate(input interface{}, tplName, filepath strin
 
 		in := File{path, string(file.Bytes()), noRepeat, tpl.Name()}
 		tg.files = append(tg.files, in)
-		logs.Infof("file path: %s\n", path)
 	}
 
 	return nil
@@ -226,7 +226,6 @@ func (tg *TemplateGenerator) Persist() error {
 	}
 
 	for _, data := range files {
-		logs.Infof("data.path: %s\n", data.Path)
 		// check for -E flags
 		if _, ok := tg.excludedFiles[filepath.Join(data.Path)]; ok {
 			continue
@@ -244,9 +243,17 @@ func (tg *TemplateGenerator) Persist() error {
 			if data.Path == "biz/utils/resp.go" {
 				data.Path = "utils/resp.go"
 			}
-			abPath = filepath.Join(filepath.Dir(outPath), data.Path)
+			filename := outPath
+			if tg.Module != "" {
+				moduleLen := strings.Split(tg.Module, "/")
+				for i := range moduleLen {
+					if moduleLen[i] != "" {
+						filename = filepath.Dir(filename)
+					}
+				}
+			}
+			abPath = filepath.Join(filename, data.Path)
 		}
-		logs.Infof("abpath: %s\n", abPath)
 		abDir := filepath.Dir(abPath)
 		isExist, err := util.PathExist(abDir)
 		if err != nil {

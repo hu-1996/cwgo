@@ -20,6 +20,7 @@ func GenerateLayout(args *config.HzArgument) error {
 		TemplateGenerator: generator.TemplateGenerator{
 			OutputDir: args.OutDir,
 			Excludes:  args.Excludes,
+			Module:    args.Module,
 		},
 	}
 
@@ -32,6 +33,7 @@ func GenerateLayout(args *config.HzArgument) error {
 		HandlerDir:      args.HandlerDir,
 		RouterDir:       args.RouterDir,
 		NeedGoMod:       args.NeedGoMod,
+		Module:          args.Module,
 	}
 
 	if args.CustomizeLayout == "" {

@@ -80,7 +80,6 @@ func Client(c *config.ClientArgument) error {
 			return err
 		}
 		args.CmdType = meta.CmdClient
-		logs.Debugf("Args: %#v\n", args)
 		err = app.TriggerPlugin(args)
 		if err != nil {
 			return cli.Exit(err, meta.PluginError)

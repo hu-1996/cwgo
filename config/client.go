@@ -49,6 +49,7 @@ func (c *ClientArgument) ParseCli(ctx *cli.Context) error {
 	c.Type = strings.ToUpper(ctx.String(consts.ServiceType))
 	c.Registry = strings.ToUpper(ctx.String(consts.Registry))
 	c.Verbose = ctx.Bool(consts.Verbose)
+	c.OutDir = ctx.String(consts.OutDir)
 	c.SliceParam.ProtoSearchPath = ctx.StringSlice(consts.ProtoSearchPath)
 	c.SliceParam.Pass = ctx.StringSlice(consts.Pass)
 	return nil
