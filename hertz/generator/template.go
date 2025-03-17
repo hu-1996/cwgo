@@ -238,10 +238,12 @@ func (tg *TemplateGenerator) Persist() error {
 
 		// create rendered file
 		abPath := filepath.Join(outPath, data.Path)
-		rootFiles := []string{consts.GoMod, "readme.md", ".gitignore", "build.sh", "script/bootstrap.sh", "biz/utils/resp.go"}
+		rootFiles := []string{consts.GoMod, "readme.md", ".gitignore", "build.sh", "script/bootstrap.sh", "biz/utils/resp.go", "biz/errno/errno.go"}
 		if slices.Contains(rootFiles, data.Path) {
 			if data.Path == "biz/utils/resp.go" {
 				data.Path = "utils/resp.go"
+			} else if data.Path == "biz/errno/errno.go" {
+				data.Path = "errno/errno.go"
 			}
 			filename := outPath
 			if tg.Module != "" {

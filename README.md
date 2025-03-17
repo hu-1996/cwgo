@@ -99,3 +99,15 @@ See [Licenses](https://github.com/hu-1996/cwgo/blob/main/licenses) for the open 
 - Feishu group (Register for [Feishu](https://www.larksuite.com/en-US/download) and join the group)
 
   ![LarkGroup](images/lark_group.png)
+
+## How to use
+
+### Generate http
+
+`cwgo server --type HTTP --server_name zc  --idl idl/user.proto -module oh --out_dir app/user --template standard_v2`
+
+### Generate http client
+
+`cwgo client --type HTTP --server_name zc  --idl idl/user.proto -module oh --out_dir http --pass "--client_dir client" --verbose`
+
+### Unsupported kitex and RPC

@@ -105,3 +105,15 @@ cwgo 基于[Apache License 2.0](https://github.com/hu-1996/cwgo/blob/main/LICENS
 <br/><br/>
 CloudWeGo 丰富了 <a href="https://landscape.cncf.io/">CNCF 云原生生态</a>。
 </p>
+
+## 使用
+
+### 生成http
+
+`cwgo server --type HTTP --server_name zc  --idl idl/user.proto -module oh --out_dir app/user --template standard_v2`
+
+### 生成http client
+
+`cwgo client --type HTTP --server_name zc  --idl idl/user.proto -module oh --out_dir http --pass "--client_dir client" --verbose`
+
+### 不支持kitex和RPC
