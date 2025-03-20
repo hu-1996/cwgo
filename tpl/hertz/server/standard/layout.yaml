@@ -428,7 +428,7 @@ layouts:
       |  ----  | ----  |
       | conf  | Configuration files |
       | main.go  | Startup file |
-      | hertz_gen  | Hertz generated model |
+      | apis  | Hertz generated model |
       | biz/handler  | Used for request processing, validation and return of response. |
       | biz/service  | The actual business logic. |
       | biz/dal  | Logic for operating the storage layer |

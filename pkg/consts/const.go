@@ -66,7 +66,7 @@ const (
 // Package Name
 const (
 	Src                   = "src"
-	DefaultHZModelDir     = "hertz_gen"
+	DefaultHZModelDir     = "apis"
 	DefaultHZClientDir    = "biz/http"
 	DefaultKitexModelDir  = "kitex_gen"
 	DefaultDbOutDir       = "biz/dal/query"
