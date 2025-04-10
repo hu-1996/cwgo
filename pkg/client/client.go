@@ -35,7 +35,6 @@ import (
 
 	hzConfig "github.com/cloudwego/hertz/cmd/hz/config"
 	"github.com/cloudwego/hertz/cmd/hz/meta"
-	"github.com/cloudwego/hertz/cmd/hz/util/logs"
 	"github.com/urfave/cli/v2"
 )
 
@@ -80,7 +79,6 @@ func Client(c *config.ClientArgument) error {
 			return err
 		}
 		args.CmdType = meta.CmdClient
-		logs.Debugf("Args: %#v\n", args)
 		err = app.TriggerPlugin(args)
 		if err != nil {
 			return cli.Exit(err, meta.PluginError)

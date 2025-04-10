@@ -33,6 +33,7 @@ func clientFlags() []cli.Flag {
 		&cli.StringFlag{Name: consts.Template, Usage: "Specify the template path. Currently cwgo supports git templates, such as `--template https://github.com/***/cwgo_template.git`", Destination: &globalArgs.ClientArgument.Template},
 		&cli.StringFlag{Name: consts.Branch, Usage: "Specify the git template's branch, default is main branch.", Destination: &globalArgs.ClientArgument.Branch},
 		&cli.StringFlag{Name: consts.Registry, Usage: "Specify the registry, default is None"},
+		&cli.StringFlag{Name: consts.OutDir, Usage: "out_dir"},
 		&cli.StringSliceFlag{Name: consts.ProtoSearchPath, Aliases: []string{"I"}, Usage: "Add an IDL search path for includes. (Valid only if idl is protobuf)"},
 		&cli.StringSliceFlag{Name: consts.Pass, Usage: "pass param to hz or kitex"},
 		&cli.BoolFlag{Name: consts.Verbose, Usage: "Turn on verbose mode."},

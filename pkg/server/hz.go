@@ -23,14 +23,13 @@ import (
 	"path/filepath"
 	"strings"
 
-	hzConfig "github.com/cloudwego/hertz/cmd/hz/config"
 	"github.com/hu-1996/cwgo/config"
 	"github.com/hu-1996/cwgo/pkg/common/utils"
 	"github.com/hu-1996/cwgo/pkg/consts"
 	"github.com/hu-1996/cwgo/tpl"
 )
 
-func convertHzArgument(sa *config.ServerArgument, hzArgument *hzConfig.Argument) (err error) {
+func convertHzArgument(sa *config.ServerArgument, hzArgument *config.HzArgument) (err error) {
 	// Common commands
 	abPath, err := filepath.Abs(sa.IdlPath)
 	if err != nil {
@@ -88,6 +87,13 @@ func convertHzArgument(sa *config.ServerArgument, hzArgument *hzConfig.Argument)
 	hzArgument.Gopkg = sa.GoPkg
 	hzArgument.Gopath = sa.GoPath
 	hzArgument.Verbose = sa.Verbose
+
+	cpath, err := filepath.Abs(consts.CurrentDir)
+	if err != nil {
+		return err
+	}
+	rpath := strings.TrimPrefix(sa.OutDir, cpath+"/")
+	hzArgument.Module = rpath
 	// Automatic judgment param
 	hzArgument.IdlType, err = utils.GetIdlType(abPath)
 	if err != nil {

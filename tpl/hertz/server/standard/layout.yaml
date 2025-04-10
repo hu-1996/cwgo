@@ -23,8 +23,8 @@ layouts:
         "github.com/hertz-contrib/logger/accesslog"
       	hertzlogrus "github.com/hertz-contrib/logger/logrus"
       	"github.com/hertz-contrib/pprof"
-      	"{{.GoModule}}/biz/router"
-      	"{{.GoModule}}/conf"
+      	"{{.GoModule}}/{{$.Module}}/biz/router"
+      	"{{.GoModule}}/{{$.Module}}/conf"
       	"go.uber.org/zap/zapcore"
       	"gopkg.in/natefinch/lumberjack.v2"
       )
@@ -132,7 +132,7 @@ layouts:
       	"github.com/cloudwego/hertz/pkg/common/hlog"
       	"github.com/kr/pretty"
       	"gopkg.in/validator.v2"
-      	"gopkg.in/yaml.v2"
+      	"gopkg.in/yaml.v3"
       )
 
       var (
@@ -319,8 +319,8 @@ layouts:
       package dal
 
       import (
-      	"{{.GoModule}}/biz/dal/mysql"
-      	"{{.GoModule}}/biz/dal/redis"
+      	"{{.GoModule}}/{{$.Module}}/biz/dal/mysql"
+      	"{{.GoModule}}/{{$.Module}}/biz/dal/redis"
       )
 
       func Init() {
@@ -336,7 +336,7 @@ layouts:
       package mysql
 
       import (
-      	"{{.GoModule}}/conf"
+      	"{{.GoModule}}/{{$.Module}}/conf"
       	"gorm.io/driver/mysql"
       	"gorm.io/gorm"
       )
@@ -369,7 +369,7 @@ layouts:
       	"context"
 
       	"github.com/redis/go-redis/v9"
-      	"{{.GoModule}}/conf"
+      	"{{.GoModule}}/{{$.Module}}/conf"
       )
 
       var RedisClient *redis.Client
@@ -428,7 +428,7 @@ layouts:
       |  ----  | ----  |
       | conf  | Configuration files |
       | main.go  | Startup file |
-      | hertz_gen  | Hertz generated model |
+      | apis  | Hertz generated model |
       | biz/handler  | Used for request processing, validation and return of response. |
       | biz/service  | The actual business logic. |
       | biz/dal  | Logic for operating the storage layer |

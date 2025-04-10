@@ -12,6 +12,9 @@ layouts:
         "context"
       	"time"
 
+        "{{.GoModule}}/{{$.Module}}/biz/router"
+        "{{.GoModule}}/{{$.Module}}/conf"
+      
         "github.com/cloudwego/hertz/pkg/app"
       	"github.com/cloudwego/hertz/pkg/app/middlewares/server/recovery"
       	"github.com/cloudwego/hertz/pkg/app/server"
@@ -23,8 +26,6 @@ layouts:
         "github.com/hertz-contrib/logger/accesslog"
       	hertzlogrus "github.com/hertz-contrib/logger/logrus"
       	"github.com/hertz-contrib/pprof"
-      	"{{.GoModule}}/biz/router"
-      	"{{.GoModule}}/conf"
       	"go.uber.org/zap/zapcore"
       	"gopkg.in/natefinch/lumberjack.v2"
       )
@@ -132,7 +133,7 @@ layouts:
       	"github.com/cloudwego/hertz/pkg/common/hlog"
       	"github.com/kr/pretty"
       	"gopkg.in/validator.v2"
-      	"gopkg.in/yaml.v2"
+      	"gopkg.in/yaml.v3"
       )
 
       var (
@@ -179,7 +180,7 @@ layouts:
       }
 
       func initConf() {
-      	prefix := "conf"
+      	prefix := "{{$.Module}}/conf"
       	confFileRelPath := filepath.Join(prefix, filepath.Join(GetEnv(), "conf.yaml"))
       	content, err := ioutil.ReadFile(confFileRelPath)
       	if err != nil {
@@ -318,8 +319,8 @@ layouts:
       package dal
 
       import (
-      	"{{.GoModule}}/biz/dal/mysql"
-      	"{{.GoModule}}/biz/dal/redis"
+      	"{{.GoModule}}/{{$.Module}}/biz/dal/mysql"
+      	"{{.GoModule}}/{{$.Module}}/biz/dal/redis"
       )
 
       func Init() {
@@ -335,7 +336,7 @@ layouts:
       package mysql
 
       import (
-      	"{{.GoModule}}/conf"
+      	"{{.GoModule}}/{{$.Module}}/conf"
       	"gorm.io/driver/mysql"
       	"gorm.io/gorm"
       )
@@ -368,7 +369,7 @@ layouts:
       	"context"
 
       	"github.com/redis/go-redis/v9"
-      	"{{.GoModule}}/conf"
+      	"{{.GoModule}}/{{$.Module}}/conf"
       )
 
       var RedisClient *redis.Client
@@ -427,7 +428,7 @@ layouts:
       |  ----  | ----  |
       | conf  | Configuration files |
       | main.go  | Startup file |
-      | hertz_gen  | Hertz generated model |
+      | apis  | Hertz generated model |
       | biz/handler  | Used for request processing, validation and return of response. |
       | biz/service  | The actual business logic. |
       | biz/dal  | Logic for operating the storage layer |
@@ -490,27 +491,168 @@ layouts:
       package utils
 
       import (
-      	"context"
-
-      	"github.com/cloudwego/hertz/pkg/app"
+        "errors"
+      
+        "{{.GoModule}}/errno"
+    
+        "github.com/cloudwego/hertz/pkg/app"
+        "github.com/cloudwego/hertz/pkg/protocol/consts"
       )
-
-      type ErrResponse struct {
-        Success  bool
-        Code     int
-        ErrorMsg string
+      
+      type Response struct {
+        // 数据集
+        RequestId string      `json:"requestId,omitempty"`
+        Code      int32       `json:"code,omitempty"`
+        Message   string      `json:"message,omitempty"`
+        Status    bool        `json:"status,omitempty"`
+        Data      interface{} `json:"data"`
+        Error     string      `json:"error,omitempty"`
+      }
+    
+      // BuildBaseResp convert error and build BaseResp
+      func BuildBaseResp(c *app.RequestContext, data interface{}, err error) {
+        if err == nil {
+          baseResp(c, data, errno.Success)
+          return
+        }
+    
+        e := errno.ErrNo{}
+        if errors.As(err, &e) {
+          baseResp(c, data, e)
+          return
+        }
+    
+        s := errno.ServiceErr.WithMessage(err.Error())
+        baseResp(c, nil, s)
+        return
+      }
+    
+      // baseResp build BaseResp from error
+      func baseResp(c *app.RequestContext, data interface{}, err errno.ErrNo) {
+          message := err.ErrMsg
+          if lang := c.GetHeader("lang"); string(lang) == "zh" {
+          message = err.ErrCnMsg
+        }
+    
+        c.JSON(err.HttpCode, &Response{
+          Code:    err.ErrCode,
+          Message: message,
+          Status:  err.ErrCode == errno.OKCode,
+          Data:    data,
+        })
+      }
+    
+      // BuildBadResp convert error and build BadResp
+      func BuildBadResp(c *app.RequestContext, data interface{}, err error) {
+        if e, ok := err.(errno.ErrNo); ok {
+          message := e.ErrMsg
+          if lang := c.GetHeader("lang"); string(lang) == "zh" {
+          message = e.ErrCnMsg
+        }
+    
+        c.JSON(e.HttpCode, &Response{
+          Code:    e.ErrCode,
+          Message: message,
+          Status:  e.ErrCode == errno.OKCode,
+          Data:    data,
+        })
+        return
+        }
+    
+        s := errno.ServiceErr.WithMessage(err.Error())
+        badResp(c, consts.StatusInternalServerError, nil, s)
+        return
+      }
+    
+      // badResp build BadResp from error
+      func badResp(c *app.RequestContext, code int, data interface{}, err errno.ErrNo) {
+        message := err.ErrMsg
+        if lang := c.GetHeader("lang"); string(lang) == "zh" {
+        message = err.ErrCnMsg
+      }
+    
+      c.JSON(code, &Response{
+        Code:    err.ErrCode,
+        Message: message,
+        Status:  err.ErrCode == errno.OKCode,
+        Data:    data,
+      })
+      }
+    
+      func BuildResp(c *app.RequestContext, code int, data interface{}) {
+        c.JSON(code, data)
       }
 
-      // SendErrResponse  pack error response
-       func SendErrResponse(ctx context.Context, c *app.RequestContext, code int, err error) {
-        // todo edit custom code
-        c.JSON(code, ErrResponse{Success: false, Code: code, ErrorMsg: err.Error()})
+  - path: biz/errno/errno.go
+    delims:
+      - "{{"
+      - "}}"
+    body: |-
+      package errno
+
+      import (
+        "errors"
+        "fmt"
+      
+        "github.com/cloudwego/hertz/pkg/protocol/consts"
+      )
+      
+      const (
+        OKCode         = 20000
+        ServiceErrCode = 60000
+      )
+      
+      const (
+        OkMsg                  = "Ok"
+      )
+      
+      type ErrNo struct {
+        ErrCode  int32
+        ErrMsg   string
+        ErrCnMsg string
+        HttpCode int
       }
 
-      // SendSuccessResponse  pack success response
-      func SendSuccessResponse(ctx context.Context, c *app.RequestContext, code int, data interface{}) {
-      	// todo edit custom code
-      	c.JSON(code, data)
+      func (e ErrNo) Error() string {
+        return e.ErrMsg
+      }
+  
+      func NewErrNo(code int32, msg string, cnMsg string, httpCode int) ErrNo {
+        return ErrNo{code, msg, cnMsg, httpCode}
+      }
+  
+      func (e ErrNo) WithMessage(msg string) ErrNo {
+        e.ErrMsg = msg
+        e.ErrCnMsg = msg
+        return e
+      }
+  
+      func (e ErrNo) WithMessageAppend(msg string, cnMsg string) ErrNo {
+        e.ErrMsg = fmt.Sprintf("%s %s", e.ErrMsg, msg)
+        e.ErrCnMsg = fmt.Sprintf("%s %s", e.ErrCnMsg, cnMsg)
+        return e
+      }
+  
+      func (e ErrNo) GetCnMessage() string {
+        return e.ErrCnMsg
+      }
+  
+      var (
+        // 200
+        Success    = NewErrNo(OKCode, OkMsg, "成功", consts.StatusOK)
+        ServiceErr = NewErrNo(ServiceErrCode, "Request processing has failed due to some unknown error.", "由于未知错误，请求处理失败", consts.StatusInternalServerError)
+      )
+        
+      // ConvertErr convert error to Errno
+      func ConvertErr(err error) ErrNo {
+        Err := ErrNo{}
+        if errors.As(err, &Err) {
+          return Err
+        }
+  
+        s := ServiceErr
+        s.ErrMsg = err.Error()
+        return s
       }
 
   - path: build.sh
@@ -519,12 +661,19 @@ layouts:
       - "}}"
     body: |-
       #!/bin/bash
-      RUN_NAME={{.ServiceName}}
-      mkdir -p output/bin output/conf
+      if [ $# -ne 2 ]; then
+        echo "Error: 需要两个参数 - path 和 service_name"
+        echo "用法: $0 <path> <service_name>"
+        exit 1
+      fi
+      path=$1
+      service_name=$2
+      RUN_NAME={{.ServiceName}}/${service_name}
+      mkdir -p output/bin/{{.ServiceName}} output/{{.ServiceName}}/conf
       cp script/bootstrap.sh output 2>/dev/null
       chmod +x output/bootstrap.sh
       cp -r conf/* output/conf
-      go build -o output/bin/${RUN_NAME}
+      go build -o output/bin/${RUN_NAME} ${path}/main.go
 
   - path: script/bootstrap.sh
     delims:
@@ -532,7 +681,13 @@ layouts:
       - "}}"
     body: |-
       #!/bin/bash
+      if [ $# -ne 1 ]; then
+        echo "错误: 需要一个参数 - service_name"
+        echo "用法: $0 <service_name>"
+        exit 1
+      fi
+      service_name=$1
       CURDIR=$(cd $(dirname $0); pwd)
-      BinaryName={{.ServiceName}}
+      BinaryName={{.ServiceName}}/${service_name}
       echo "$CURDIR/bin/${BinaryName}"
       exec $CURDIR/bin/${BinaryName}

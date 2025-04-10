@@ -4,13 +4,14 @@ go 1.18
 
 require (
 	github.com/Masterminds/sprig/v3 v3.2.3
-	github.com/cloudwego/hertz/cmd/hz v0.8.1
+	github.com/cloudwego/hertz/cmd/hz v0.9.1
 	github.com/cloudwego/kitex v0.9.1
 	github.com/cloudwego/thriftgo v0.3.10
 	github.com/fatih/camelcase v1.0.0
 	github.com/stretchr/testify v1.8.4
 	github.com/urfave/cli/v2 v2.27.1
 	golang.org/x/tools v0.20.0
+	gopkg.in/yaml.v3 v3.0.1
 	gorm.io/driver/mysql v1.5.6
 	gorm.io/driver/postgres v1.5.7
 	gorm.io/driver/sqlite v1.5.5
@@ -73,7 +74,6 @@ require (
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
-	gopkg.in/yaml.v3 v3.0.1 // indirect
 	gorm.io/datatypes v1.1.1-0.20230130040222-c43177d3cf8c // indirect
 	gorm.io/hints v1.1.0 // indirect
 	gorm.io/plugin/dbresolver v1.5.0 // indirect

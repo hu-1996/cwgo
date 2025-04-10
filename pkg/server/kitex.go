@@ -30,7 +30,6 @@ import (
 	"strings"
 	"text/template"
 
-	hzConfig "github.com/cloudwego/hertz/cmd/hz/config"
 	"github.com/cloudwego/hertz/cmd/hz/meta"
 	"github.com/cloudwego/kitex"
 	kargs "github.com/cloudwego/kitex/tool/cmd/kitex/args"
@@ -207,9 +206,9 @@ func checkKitexArgs(a *kargs.Arguments) (err error) {
 	return nil
 }
 
-func hzArgsForHex(c *config.ServerArgument) (*hzConfig.Argument, error) {
+func hzArgsForHex(c *config.ServerArgument) (*config.HzArgument, error) {
 	utils.SetHzVerboseLog(c.Verbose)
-	hzArgs := hzConfig.NewArgument()
+	hzArgs := config.NewHzArgument()
 	err := convertHzArgument(c, hzArgs)
 	if err != nil {
 		return nil, err
