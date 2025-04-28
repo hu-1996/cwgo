@@ -265,6 +265,19 @@ func (tg *TemplateGenerator) Persist() error {
 			if err := os.MkdirAll(abDir, os.FileMode(0o744)); err != nil {
 				return fmt.Errorf("mkdir %s failed, err: %v", abDir, err.Error())
 			}
+		} else {
+			notRewritePaths := []string{"main.go", "init.go", "conf.go", "conf.yaml", "errno.go", "resp.go", "readme.md", ".gitignore", "build.sh", "bootstrap.sh", "docker-compose.yaml"}
+			notRewrite := false
+			for _, path := range notRewritePaths {
+				if strings.HasSuffix(abPath, path) {
+					notRewrite = true
+					break
+				}
+			}
+			if notRewrite {
+				logs.Infof("not rewrite %s", abPath)
+				continue
+			}
 		}
 
 		err = func() error {
