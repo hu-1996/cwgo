@@ -379,10 +379,8 @@ layouts:
       ### 通过idl生成代码
       ```shell
       cwgo server --type HTTP --server_name {{.ServiceName}}  --idl idl/xxx.proto -module {{.ServiceName}} --out_dir app --template standard_v2
-      ```
 
       生成代码结构如下：
-
       .
       ├── apis
       │   ├── api
