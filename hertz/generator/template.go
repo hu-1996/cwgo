@@ -261,22 +261,36 @@ func (tg *TemplateGenerator) Persist() error {
 		if err != nil {
 			return fmt.Errorf("check directory '%s' failed, err: %v", abDir, err.Error())
 		}
+
+		logs.Infof("abPath: [%v] %s", isExist, abPath)
 		if !isExist {
 			if err := os.MkdirAll(abDir, os.FileMode(0o744)); err != nil {
 				return fmt.Errorf("mkdir %s failed, err: %v", abDir, err.Error())
 			}
 		} else {
-			notRewritePaths := []string{"main.go", "init.go", "conf.go", "conf.yaml", "errno.go", "resp.go", "readme.md", ".gitignore", "build.sh", "bootstrap.sh", "docker-compose.yaml"}
-			notRewrite := false
-			for _, path := range notRewritePaths {
-				if strings.HasSuffix(abPath, path) {
-					notRewrite = true
-					break
+			var fileExist bool = true
+			_, err = os.Stat(abPath)
+			if err != nil {
+				if os.IsNotExist(err) {
+					fileExist = false
+				} else {
+					return fmt.Errorf("check file '%s' failed, err: %v", abPath, err.Error())
 				}
 			}
-			if notRewrite {
-				logs.Infof("not rewrite %s", abPath)
-				continue
+
+			if fileExist {
+				notRewritePaths := []string{"main.go", "init.go", "conf.go", "conf.yaml", "errno.go", "resp.go", "readme.md", ".gitignore", "build.sh", "bootstrap.sh", "docker-compose.yaml"}
+				notRewrite := false
+				for _, path := range notRewritePaths {
+					if strings.HasSuffix(abPath, path) {
+						notRewrite = true
+						break
+					}
+				}
+				if notRewrite {
+					logs.Infof("not rewrite %s", abPath)
+					continue
+				}
 			}
 		}
 
