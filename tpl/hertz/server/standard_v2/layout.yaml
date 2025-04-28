@@ -16,18 +16,15 @@ layouts:
         "{{.GoModule}}/{{$.Module}}/conf"
       
         "github.com/cloudwego/hertz/pkg/app"
-      	"github.com/cloudwego/hertz/pkg/app/middlewares/server/recovery"
-      	"github.com/cloudwego/hertz/pkg/app/server"
-      	"github.com/cloudwego/hertz/pkg/common/hlog"
+        "github.com/cloudwego/hertz/pkg/app/middlewares/server/recovery"
+        "github.com/cloudwego/hertz/pkg/app/server"
+        "github.com/cloudwego/hertz/pkg/common/hlog"
         "github.com/cloudwego/hertz/pkg/common/utils"
         "github.com/cloudwego/hertz/pkg/protocol/consts"
         "github.com/hertz-contrib/cors"
-      	"github.com/hertz-contrib/gzip"
+        "github.com/hertz-contrib/gzip"
         "github.com/hertz-contrib/logger/accesslog"
-      	hertzlogrus "github.com/hertz-contrib/logger/logrus"
-      	"github.com/hertz-contrib/pprof"
-      	"go.uber.org/zap/zapcore"
-      	"gopkg.in/natefinch/lumberjack.v2"
+        "github.com/hertz-contrib/pprof"
       )
 
       func main() {
@@ -38,11 +35,6 @@ layouts:
 
         registerMiddleware(h)
 
-        // add a ping route to test
-        h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
-        	ctx.JSON(consts.StatusOK, utils.H{"ping": "pong"})
-        })
-
       	router.GeneratedRegister(h)
 
       	h.Spin()
@@ -50,22 +42,7 @@ layouts:
 
       func registerMiddleware(h *server.Hertz) {
       	// log
-      	logger := hertzlogrus.NewLogger()
-      	hlog.SetLogger(logger)
       	hlog.SetLevel(conf.LogLevel())
-        asyncWriter := &zapcore.BufferedWriteSyncer{
-            WS: zapcore.AddSync(&lumberjack.Logger{
-                Filename:   conf.GetConf().Hertz.LogFileName,
-                MaxSize:    conf.GetConf().Hertz.LogMaxSize,
-                MaxBackups: conf.GetConf().Hertz.LogMaxBackups,
-                MaxAge:     conf.GetConf().Hertz.LogMaxAge,
-            }),
-            FlushInterval: time.Minute,
-        }
-        hlog.SetOutput(asyncWriter)
-        h.OnShutdown = append(h.OnShutdown, func(ctx context.Context) {
-            asyncWriter.Sync()
-        })
 
       	// pprof
       	if conf.GetConf().Hertz.EnablePprof {
@@ -125,10 +102,9 @@ layouts:
       package conf
 
       import (
-      	"io/ioutil"
       	"os"
-      	"path/filepath"
-      	"sync"
+        "path/filepath"
+        "sync"
 
       	"github.com/cloudwego/hertz/pkg/common/hlog"
       	"github.com/kr/pretty"
@@ -167,10 +143,6 @@ layouts:
       	EnableGzip    bool   `yaml:"enable_gzip"`
         EnableAccessLog bool   `yaml:"enable_access_log"`
       	LogLevel      string `yaml:"log_level"`
-      	LogFileName   string `yaml:"log_file_name"`
-      	LogMaxSize    int    `yaml:"log_max_size"`
-      	LogMaxBackups int    `yaml:"log_max_backups"`
-      	LogMaxAge     int    `yaml:"log_max_age"`
       }
 
       // GetConf gets configuration instance
@@ -182,7 +154,7 @@ layouts:
       func initConf() {
       	prefix := "{{$.Module}}/conf"
       	confFileRelPath := filepath.Join(prefix, filepath.Join(GetEnv(), "conf.yaml"))
-      	content, err := ioutil.ReadFile(confFileRelPath)
+      	content, err := os.ReadFile(confFileRelPath)
       	if err != nil {
       		panic(err)
       	}
@@ -206,7 +178,7 @@ layouts:
       func GetEnv() string {
       	e := os.Getenv("GO_ENV")
       	if len(e) == 0 {
-      		return "test"
+      		return "dev"
       	}
       	return e
       }
@@ -244,11 +216,7 @@ layouts:
         enable_pprof: true
         enable_gzip: true
         enable_access_log: true
-        log_level: info
-        log_file_name: "log/hertz.log"
-        log_max_size: 10
-        log_max_age: 3
-        log_max_backups: 50
+        log_level: debug
 
       mysql:
         dsn: "gorm:gorm@tcp(127.0.0.1:3306)/gorm?charset=utf8mb4&parseTime=True&loc=Local"
@@ -269,12 +237,8 @@ layouts:
         address: ":8080"
         enable_pprof: false
         enable_gzip: true
-        enable_access_log: true
+        enable_access_log: false
         log_level: info
-        log_file_name: "log/hertz.log"
-        log_max_size: 10
-        log_max_age: 3
-        log_max_backups: 50
 
       mysql:
         dsn: "gorm:gorm@tcp(127.0.0.1:3306)/gorm?charset=utf8mb4&parseTime=True&loc=Local"
@@ -296,11 +260,7 @@ layouts:
         enable_pprof: true
         enable_gzip: true
         enable_access_log: true
-        log_level: info
-        log_file_name: "log/hertz.log"
-        log_max_size: 10
-        log_max_age: 3
-        log_max_backups: 50
+        log_level: debug
 
       mysql:
         dsn: "gorm:gorm@tcp(127.0.0.1:3306)/gorm?charset=utf8mb4&parseTime=True&loc=Local"
@@ -414,32 +374,73 @@ layouts:
     body: |-
       # *** Project
 
-      ## introduce
+      ## 开发
 
-      - Use the [Hertz](https://github.com/cloudwego/hertz/) framework
-      - Integration of pprof, cors, recovery, access_log, gzip and other extensions of Hertz.
-      - Generating the base code for unit tests.
-      - Provides basic profile functions.
-      - Provides the most basic MVC code hierarchy.
-
-      ## Directory structure
-
-      |  catalog   | introduce  |
-      |  ----  | ----  |
-      | conf  | Configuration files |
-      | main.go  | Startup file |
-      | apis  | Hertz generated model |
-      | biz/handler  | Used for request processing, validation and return of response. |
-      | biz/service  | The actual business logic. |
-      | biz/dal  | Logic for operating the storage layer |
-      | biz/route  | Routing and middleware registration |
-      | biz/utils  | Wrapped some common methods |
-
-      ## How to run
+      ### 安装代码生成工具
 
       ```shell
-      sh build.sh
-      sh output/bootstrap.sh
+      GOPROXY=https://goproxy.cn/,direct go install github.com/hu-1996/cwgo@latest
+      ```
+
+      ### 通过idl生成代码
+      ```shell
+      cwgo server --type HTTP --server_name {{.ServiceName}}  --idl idl/{{.ServiceName}}.proto -module {{.ServiceName}} --out_dir app --template standard_v2
+      ```
+
+      生成代码结构如下：
+
+      .
+      ├── apis
+      │   ├── api
+      │   │   └── api.pb.go
+      │   └── xxx
+      │       └── xxx.pb.go
+      ├── app
+      │   ├── biz
+      │   │   ├── dal
+      │   │   │   ├── init.go
+      │   │   │   ├── mysql
+      │   │   │   │   └── init.go
+      │   │   │   └── redis
+      │   │   │       └── init.go
+      │   │   ├── handler
+      │   │   │   └── xxx
+      │   │   │       ├── xxx_service_test.go
+      │   │   │       └── xxx_service.go
+      │   │   ├── router
+      │   │   │   ├── xxx
+      │   │   │   │   ├── middleware.go
+      │   │   │   │   └── xxx.go
+      │   │   │   └── register.go
+      │   │   └── service
+      │   │       └── xxx
+      │   │           └── get_xxx.go
+      │   ├── conf
+      │   │   ├── conf.go
+      │   │   ├── dev
+      │   │   │   └── conf.yaml
+      │   │   ├── online
+      │   │   │   └── conf.yaml
+      │   │   └── test
+      │   │       └── conf.yaml
+      │   └── main.go
+      ├── build.sh
+      ├── docker-compose.yaml
+      ├── errno
+      │   └── errno.go
+      ├── go.mod
+      ├── go.sum
+      ├── idl
+      │   ├── api.proto
+      │   └── model_file.proto
+      ├── readme_developer.md
+      ├── readme.md
+      ├── script
+      │   └── bootstrap.sh
+      └── utils
+          └── resp.go
+
+      23 directories, 27 files
       ```
 
   - path: .gitignore
