@@ -338,7 +338,8 @@ func (pkgGen *HttpPackageGenerator) updateRegister(pkg, rDir, pkgName string) er
 		DepPkgAlias: strings.ReplaceAll(pkgName, "/", "_"),
 		DepPkg:      pkg,
 	}
-	registerPath := filepath.Join(rDir, registerTplName)
+
+	registerPath := filepath.Join(pkgGen.Module, rDir, registerTplName)
 	isExist, err := util.PathExist(registerPath)
 	if err != nil {
 		return err
@@ -373,7 +374,7 @@ func (pkgGen *HttpPackageGenerator) updateRegister(pkg, rDir, pkgName string) er
 		bufReg.WriteString("\n\t" + insertReg)
 		bufReg.Write(file[subIndexReg[1]:])
 
-		pkgGen.files = append(pkgGen.files, File{registerPath, string(bufReg.Bytes()), false, registerTplName})
+		pkgGen.files = append(pkgGen.files, File{filepath.Join(rDir, registerTplName), string(bufReg.Bytes()), false, registerTplName})
 	}
 
 	return nil

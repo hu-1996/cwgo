@@ -403,7 +403,7 @@ func (pkgGen *HttpPackageGenerator) genLoopMethod(tplInfo *Template, filePathRen
 		return err
 	}
 	// determine if a custom file exists
-	exist, err := util.PathExist(filePath)
+	exist, err := util.PathExist(filepath.Join(pkgGen.Module, filePath))
 	if err != nil {
 		return fmt.Errorf("judge file(%s) exists failed, err: %v", filePath, err)
 	}

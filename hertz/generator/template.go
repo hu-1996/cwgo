@@ -279,18 +279,8 @@ func (tg *TemplateGenerator) Persist() error {
 			}
 
 			if fileExist {
-				notRewritePaths := []string{"main.go", "init.go", "conf.go", "conf.yaml", "errno.go", "resp.go", "readme.md", ".gitignore", "build.sh", "bootstrap.sh", "docker-compose.yaml"}
-				notRewrite := false
-				for _, path := range notRewritePaths {
-					if strings.HasSuffix(abPath, path) {
-						notRewrite = true
-						break
-					}
-				}
-				if notRewrite {
-					logs.Infof("not rewrite %s", abPath)
-					continue
-				}
+				logs.Infof("fileExist: %s", abPath)
+				continue
 			}
 		}
 
@@ -329,7 +319,7 @@ func (tg *TemplateGenerator) GetFormatAndExcludedFiles() ([]File, error) {
 
 		// check repeat files
 		logs.Infof("Write %s", data.Path)
-		isExist, err := util.PathExist(filepath.Join(data.Path))
+		isExist, err := util.PathExist(filepath.Join(outPath, data.Path))
 		if err != nil {
 			return nil, fmt.Errorf("check file '%s' failed, err: %v", data.Path, err.Error())
 		}
